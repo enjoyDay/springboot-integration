@@ -107,36 +107,34 @@ public class ClassPathXmlApplicationContext {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
+            //获取各个属性
             Field[] declaredFields = forName.getDeclaredFields();
-
 
             //获取子节点的子节点property
             List<Element> childElements = element.elements();
             for (Element childElement : childElements) {
                 String name = childElement.attributeValue("name");
                 String value = childElement.attributeValue("value");
-                for (Field field : declaredFields) {
-                    if (field.getName().equals(name)) {
-                        field.setAccessible(true);
-                        //获取这个字段的类型
-                        String name1= field.getType().getName();
-                        if (name1.equals("int")) {
-                            try {
-                                field.set(o, Integer.valueOf(value));
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        else{
-                            try {
-                                field.set(o, value);
-                            } catch (IllegalAccessException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
+                //获取类指定的属性name
+                Field declaredField = forName.getDeclaredField(name);
+                declaredField.setAccessible(true);
+                //获取这个属性的类型
+                String name1= declaredField.getType().getName();
+                if (name1.equals("int")) {
+                    try {
+                        declaredField.set(o, Integer.valueOf(value));
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
                     }
                 }
+                else{
+                    try {
+                        declaredField.set(o, value);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
             map.put(id, o);
         }
