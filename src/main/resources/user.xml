@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--该配置文件是为了测试反射机制，手写IOC创建-->
 <beans>
     <bean id="user" class="com.springbootIntegration.demo.test.reflection.User">
         <property name="id" value="3"></property>
         <property name="username" value="xml配置文件"></property>
         <property name="age" value="13"></property>
         <property name="address" value="浙江杭州"></property>
+        <property name="role1" ref="role1"></property>
+        <property name="role2" ref="role2"></property>
     </bean>
-    <bean id="role" class="com.springbootIntegration.demo.test.User">
+    <bean id="role1" class="com.springbootIntegration.demo.test.reflection.Role">
         <property name="username" value="琪琪"></property>
-        <property name="jov" value="班长"></property>
+        <property name="job" value="班长"></property>
+    </bean>
+    <bean id="role2" class="com.springbootIntegration.demo.test.reflection.Role">
+        <property name="username" value="嘻嘻"></property>
+        <property name="job" value="副班长"></property>
     </bean>
 </beans>

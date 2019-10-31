@@ -15,6 +15,9 @@ public class User {
     private int age;
     private String address;
 
+    private Role role1;
+    private Role role2;
+
     private User() {
     }
 

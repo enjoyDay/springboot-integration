@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,7 @@ public class ClassPathXmlApplicationContext {
         this.xmlPath = path;
         loadXmlProperty();
     }
+
     /**
      * 获取一个bean
      *
@@ -53,24 +55,26 @@ public class ClassPathXmlApplicationContext {
         if (map.containsKey(beanName)) {
             return map.get(beanName);
         }
-        throw new Exception("找不到此类");
+        throw new Exception("找不到此类:"+beanName);
     }
 
     /**
      * 加载xml配置文件
      */
     private void loadXmlProperty() throws Exception {
-        //1、读取xml文件
+        //1、第一次读取xml文件,只创建bean
         //1.1 以下是对xml文件的操作
         SAXReader saxReader = new SAXReader();
         //默认文件在resource包下
         URL resource = this.getClass().getClassLoader().getResource("user.xml");
+        //加载xml的文档
         Document document = null;
         try {
             document = saxReader.read(resource);
         } catch (DocumentException e) {
             e.printStackTrace();
         }
+//        ---------------------------------------------------------
         //1.2 获取根节点beans
         Element rootElement = document.getRootElement();
         //1.3 获取根节点下的所有子节点bean（未知子元素的情况下使用elements(),已知情况下使用elementText()）
@@ -107,36 +111,51 @@ public class ClassPathXmlApplicationContext {
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             }
-            //获取各个属性
-            Field[] declaredFields = forName.getDeclaredFields();
+            map.put(id, o);
+        }
 
-            //获取子节点的子节点property
+        //        ---------------------------------------------------------
+        //2 第二次读xml.是为了给bean赋值属性
+        //给每一个对象设置属性值
+        // 遍历bean
+        for (Element element : elements) {
+            String key = element.attributeValue("id");
+            String aClass = element.attributeValue("class");
+            Object o = map.get(key);
+            //获取propery
             List<Element> childElements = element.elements();
             for (Element childElement : childElements) {
+                //获取property中的属性值
                 String name = childElement.attributeValue("name");
                 String value = childElement.attributeValue("value");
+                String ref = childElement.attributeValue("ref");
+
+                Class<?> forName = Class.forName(aClass);
                 //获取类指定的属性name
                 Field declaredField = forName.getDeclaredField(name);
                 declaredField.setAccessible(true);
-                //获取这个属性的类型
-                String name1= declaredField.getType().getName();
-                if (name1.equals("int")) {
-                    try {
-                        declaredField.set(o, Integer.valueOf(value));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                //如果是引用
+                if (ref != null) {
+                    Object refObject = map.get(ref);
+                    declaredField.set(o, refObject);
+                } else {
+                    //获取这个属性的类型
+                    String name1 = declaredField.getType().getName();
+                    if (name1.equals("int")) {
+                        try {
+                            declaredField.set(o, Integer.valueOf(value));
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            declaredField.set(o, value);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-                else{
-                    try {
-                        declaredField.set(o, value);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                }
-
             }
-            map.put(id, o);
         }
     }
 }
