@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public final class Resources {
-    public static final ResourceBundle THIRDPARTY = ResourceBundle.getBundle("config/thirdParty");
+    //注意下面这句话由于没有创建配置文件，但是静态变量在加载时候还要去优先加载，所以会抛出异常ExceptionInInitializerError
+//    public static final ResourceBundle THIRDPARTY = ResourceBundle.getBundle("config/thirdParty");
     private static final Map<String, ResourceBundle> MESSAGES = new HashMap();
 
     public Resources() {
@@ -16,11 +17,11 @@ public final class Resources {
 
     public static String getMessage(String key, Object... params) {
         Locale locale = LocaleContextHolder.getLocale();
-        ResourceBundle message = (ResourceBundle)MESSAGES.get(locale.getLanguage());
+        ResourceBundle message = MESSAGES.get(locale.getLanguage());
         if (message == null) {
             Map var4 = MESSAGES;
             synchronized(MESSAGES) {
-                message = (ResourceBundle)MESSAGES.get(locale.getLanguage());
+                message = MESSAGES.get(locale.getLanguage());
                 if (message == null) {
                     message = ResourceBundle.getBundle("i18n/messages", locale);
                     MESSAGES.put(locale.getLanguage(), message);
