@@ -166,8 +166,9 @@ public class AnnotationConfigApplicationContext {
                     method.setAccessible(true);
                     int parameterCount = method.getParameterCount();
                     if (parameterCount == 0) {
-                        method.invoke(map.get(key), null);
-                        System.out.println(value);
+                        Object result = method.invoke(map.get(key), null);
+                        System.out.println("方法执行的结果："+result);
+                        System.out.println("反射获取方法的注解值："+value);
                     }
                 }
             }
