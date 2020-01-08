@@ -101,8 +101,8 @@ public class LRUCache<K, V> implements Iterable<K> {
         Node node = tail.pre;
         Node pre = node.pre;
 
-        tail.pre = pre;
         pre.next = tail;
+        tail.pre = pre;
 
         node.pre = null;
         node.next = null;
