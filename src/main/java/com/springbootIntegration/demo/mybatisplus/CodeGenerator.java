@@ -50,7 +50,7 @@ public class CodeGenerator {
         GlobalConfig gc = new GlobalConfig();
         String projectPath = System.getProperty("user.dir");
         //自定义输出位置
-//        String projectPath = "F:/test";
+//        String projectPath = "F:/Test";
         gc.setOutputDir(projectPath+ "/src/main/java");
         gc.setFileOverride(false);//设置是否覆盖已经存在的文件
         //设置作者

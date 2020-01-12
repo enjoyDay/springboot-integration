@@ -21,7 +21,8 @@ public class Producer {
     @Autowired
     private Topic topic;
 
-    @Scheduled(fixedDelay = 1000)
+    //注意，需要在开启activemq服务器后才能打开下面的注解
+//    @Scheduled(fixedDelay = 1000)
     public void sendTopic() {
         String text = "生产者发送的消息" + System.currentTimeMillis();
         jmsMessagingTemplate.convertAndSend(topic, text);

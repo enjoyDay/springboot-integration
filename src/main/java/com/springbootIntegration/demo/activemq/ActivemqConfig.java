@@ -1,4 +1,4 @@
-package com.springbootIntegration.demo.config;
+package com.springbootIntegration.demo.activemq;
 
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Value;

@@ -23,7 +23,7 @@ public class SwaggerConfig {
         @Override
         public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
             for (String profile : context.getEnvironment().getActiveProfiles()) {
-                if ("dev".equals(profile) || "test".equals(profile)) {
+                if ("dev".equals(profile) || "Test".equals(profile)) {
                     return true;
                 }
             }
