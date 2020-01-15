@@ -11,7 +11,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -22,16 +21,16 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
  * @author liukun
- * @description 配置授权信息
+ * @description 认证授权中心，配置授权信息
  *
  *
  * 授权模式
- * 使用授权码获取时的地址：http://localhost:8080/oauth/authorize?response_type=code&client_id=user_1&redirect_uri=http://localhost:8080/index.html
+ * 使用授权码获取时的地址：http://localhost:8080/oauth/authorize?response_type=code&client_id=client_1&redirect_uri=http://localhost:8080/index.html
  * 中间会回调到的地址：http://localhost:8080/index.html?code=iG2VvN
- * 根据授权码获取access_token:http://localhost:8080/oauth/token?grant_type=authorization_code&code=kZkxa5&redirect_uri=http://localhost:8080/index.html&scope=all
+ * 根据授权码获取access_token:http://localhost:8080/oauth/token?grant_type=authorization_code&code=qlHkCu&redirect_uri=http://localhost:8080/index.html&scope=all
  *
  * 客户端模式：
- * 获取access_token地址：http://localhost:8080/oauth/token?grant_type=client_credentials&scope=test&client_id=user_1&client_secret=123456
+ * 获取access_token地址：http://localhost:8080/oauth/token?grant_type=client_credentials&scope=test&client_id=client_1&client_secret=123456
  * @date 2020/1/12
  */
 @Configuration
@@ -48,10 +47,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //                .authorizedGrantTypes("password","client_credentials","refresh_token").scopes("all").accessTokenValiditySeconds(accessTokenValiditySeconds);
 //    }
 
-    // 授权码模式
+    // 授权码模式,这个配置的是客户端申请的app_id和app_secrete
 //    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 //        // withClient appid
-//        clients.inMemory().withClient("user_1")
+//        clients.inMemory().withClient("client_1")
 //                .secret(passwordEncoder().encode("123456"))
 //                .authorizedGrantTypes("password", "client_credentials", "refresh_token", "authorization_code")
 //                .scopes("all").redirectUris("http://localhost:8080/index.html")
@@ -62,33 +61,49 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     // 客户端模式
     // 这个格式要在 Spring Security 5.0开始
     // String finalSecret = "{bcrypt}" + new BCryptPasswordEncoder().encode("123456");
-    String finalSecret = new BCryptPasswordEncoder().encode("123456");
+
+    // 客户端详情信息
+    // 客户端详细信息在这里初始化，你能够把客户端详情信息写死在这或者是通过数据库
+    // 来存储调取详情信息
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 // 用于标识用户ID
-                .withClient("user_1")
+                .withClient("client_1")
                 .authorizedGrantTypes("client_credentials", "refresh_token")//授权方式
                 // 授权范围
                 .scopes("test")
                 .authorities("oauth2")
                 // 客户端安全码,secret密码配置从 Spring Security 5.0开始必须以 {bcrypt}+加密后的密码 这种格式填写;
-                .secret(finalSecret);
+                .secret(passwordEncoder().encode("123456"));
     }
 
-    // 设置token类型
+    /**
+     *
+     * 用来配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)
+     * @param endpoints
+     */
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        // 必须加上他，不然刷新令牌接收会报错
         endpoints.authenticationManager(authenticationManager())
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET,
                         HttpMethod.POST);
+        // 刷新令牌
+        endpoints.authenticationManager(authenticationManager());
+        endpoints.userDetailsService(userDetailsService());
     }
 
+    /**
+     * 用来配置令牌端点(Token Endpoint)的安全约束.
+     * @param oauthServer
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         // 允许表单认证
         oauthServer.allowFormAuthenticationForClients();
         // 允许check_token访问
-        oauthServer.checkTokenAccess("permitAll()");
+        oauthServer.tokenKeyAccess("permitAll()");
+        oauthServer.checkTokenAccess("isAuthenticated()");
     }
 
     @Bean
@@ -110,9 +125,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
     }
-
+    // 这个用于验证，验证用户输入的账号、密码与这个是否一致（也就是在第三方登录地方输入的账号密码要与这个一致才能通过）
     // 设置添加用户信息,正常应该从数据库中读取
-    //todo 需要设置从数据库中获取数据
+    //todo 需要设置从数据库中获取数据，用于验证用户信息，包括账号，密码，权限
     @Bean
     UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager userDetailsService = new InMemoryUserDetailsManager();
