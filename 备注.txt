@@ -21,3 +21,5 @@ springboot 2.0.1整合各个框架，方便以后使用
 2019-9-30：整合quartz类
 
 2020-1-13：新增springboot整合OAuth2,简单整合
+
+2020-2-22：新增springboot整合dubbo的简单使用（前提需要开启zk）
