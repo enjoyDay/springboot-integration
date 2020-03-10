@@ -22,6 +22,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 /**
  * @author liukun
  * @description 认证授权中心，配置授权信息
+ * oauth2使用
  *
  *
  * 授权模式
@@ -48,15 +49,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 //    }
 
     // 授权码模式,这个配置的是客户端申请的app_id和app_secrete
-//    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//        // withClient appid
-//        clients.inMemory().withClient("client_1")
-//                .secret(passwordEncoder().encode("123456"))
-//                .authorizedGrantTypes("password", "client_credentials", "refresh_token", "authorization_code")
-//                .scopes("all").redirectUris("http://localhost:8080/index.html")
-//                .accessTokenValiditySeconds(accessTokenValiditySeconds)
-//                .refreshTokenValiditySeconds(refreshTokenValiditySeconds);
-//    }
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        // withClient appid
+        clients.inMemory().withClient("client_1")
+                .secret(passwordEncoder().encode("123456"))
+                .authorizedGrantTypes("password", "client_credentials", "refresh_token", "authorization_code")
+                .scopes("all").redirectUris("http://localhost:8080/index.html")
+                .accessTokenValiditySeconds(accessTokenValiditySeconds)
+                .refreshTokenValiditySeconds(refreshTokenValiditySeconds);
+    }
 
     // 客户端模式
     // 这个格式要在 Spring Security 5.0开始
@@ -65,18 +66,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     // 客户端详情信息
     // 客户端详细信息在这里初始化，你能够把客户端详情信息写死在这或者是通过数据库
     // 来存储调取详情信息
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                // 用于标识用户ID
-                .withClient("client_1")
-                .authorizedGrantTypes("client_credentials", "refresh_token")//授权方式
-                // 授权范围
-                .scopes("test")
-                .authorities("oauth2")
-                // 客户端安全码,secret密码配置从 Spring Security 5.0开始必须以 {bcrypt}+加密后的密码 这种格式填写;
-                .secret(passwordEncoder().encode("123456"));
-    }
+//    @Override
+//    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+//        clients.inMemory()
+//                // 用于标识用户ID
+//                .withClient("client_1")
+//                .authorizedGrantTypes("client_credentials", "refresh_token")//授权方式
+//                // 授权范围
+//                .scopes("test")
+//                .authorities("oauth2")
+//                // 客户端安全码,secret密码配置从 Spring Security 5.0开始必须以 {bcrypt}+加密后的密码 这种格式填写;
+//                .secret(passwordEncoder().encode("123456"));
+//    }
 
     /**
      *

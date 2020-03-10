@@ -8,7 +8,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 
 /**
  * @author liukun
- * @description 资源服务中心，用于对指定的请求向认证中心验证access_token
+ * @description 资源服务中心，用于对指定的请求向认证授权中心验证access_token
+ * oauth使用
  * @date 2020/1/14
  */
 @Configuration
