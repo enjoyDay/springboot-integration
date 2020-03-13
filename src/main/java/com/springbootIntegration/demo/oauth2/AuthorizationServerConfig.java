@@ -86,6 +86,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         // 必须加上他，不然刷新令牌接收会报错
+        // authenticationManager授权管理器
         endpoints.authenticationManager(authenticationManager())
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET,
                         HttpMethod.POST);
@@ -102,7 +103,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
         // 允许表单认证
         oauthServer.allowFormAuthenticationForClients();
-        // 允许check_token访问
+        // 允许资源服务器的check_token访问，默认是denyAll
         oauthServer.tokenKeyAccess("permitAll()");
         oauthServer.checkTokenAccess("isAuthenticated()");
     }

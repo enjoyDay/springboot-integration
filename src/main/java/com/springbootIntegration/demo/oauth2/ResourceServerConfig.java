@@ -10,6 +10,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
  * @author liukun
  * @description 资源服务中心，用于对指定的请求向认证授权中心验证access_token
  * oauth使用
+ * 资源服务为受OAuth2令牌保护的资源提供服务
  * @date 2020/1/14
  */
 @Configuration
@@ -30,9 +31,13 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeRequests()
+                .requestMatchers()
                 //配置order访问控制，必须认证过后才可以访问
-                .antMatchers("/openApi/**").authenticated();
+                .antMatchers("/openApi/**")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/openApi/**")
+                .authenticated();
 
     }
 }

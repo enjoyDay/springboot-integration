@@ -26,6 +26,6 @@ public class MyAuthenticationFailureHandler implements AuthenticationFailureHand
             throws IOException, ServletException {
         log.info("用户认证失败");
         // 重定向
-        response.sendRedirect("http://www.mayikt.com");
+        response.sendRedirect("http://www.baidu.com");
     }
 }
