@@ -15,5 +15,9 @@ public class TestJDKProxy {
         //就会通过代理对象进入代理的逻辑方法invoke中
         //在invoke中利用了反射，使用真实对象去调用此方法
         proxy.sayHelloWorld();
+
+        // 如果实现类实现了多个接口，则所有接口都将被代理
+        HiWorld proxy1 = (HiWorld) proxy;
+        proxy1.sayHi();
     }
 }
