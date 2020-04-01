@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root>
+    <student id="111" group="一年级">
+        <name>张三</name>
+        <sex>男</sex>
+        <age>18</age>
+        <email>zhangsan@163.com</email>
+        <birthday>1987-06-08</birthday>
+        <memo>好学生</memo>
+    </student>
+    <student group="二年级" id="222">
+        <email>lisi@163.com</email>
+        <birthday>1987-06-08</birthday>
+        <memo>好学生</memo>
+        <name>李四</name>
+        <sex>女</sex>
+        <age>18</age>
+    </student>
+</root>
