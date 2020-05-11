@@ -13,6 +13,11 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/10/24
  */
 public class ThreadPool {
+
+    private static void test(int temp) {
+        System.out.println(Thread.currentThread().getName() + ",i:" + temp);
+    }
+
     // 不固定线程池
     public static void main(String[] args) {
         ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
@@ -25,14 +30,12 @@ public class ThreadPool {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.println(Thread.currentThread().getName() + ",i:" + temp);
+                test(temp);
             });
         }
         newCachedThreadPool.shutdown();
-    }
 
-
-    // 固定线程数线程
+        // 固定线程数线程
 //    public static void main(String[] args) {
 //        ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(5);
 //        for (int i = 0; i < 10; i++) {
@@ -41,7 +44,7 @@ public class ThreadPool {
 //        }
 //    }
 
-    // 定时器线程
+        // 定时器线程
 //    public static void main(String[] args) {
 //        ScheduledExecutorService newScheduledThreadPool = Executors.newScheduledThreadPool(5);
 //        for (int i = 0; i < 10; i++) {
@@ -54,7 +57,7 @@ public class ThreadPool {
 //        }
 //    }
 
-    // 单线程
+        // 单线程
 //    public static void main(String[] args) {
 //        ExecutorService newSingleThreadExecutor = Executors.newSingleThreadExecutor();
 //        for (int i = 0; i < 10; i++) {
@@ -71,4 +74,5 @@ public class ThreadPool {
 //        }
 //
 //    }
+    }
 }
