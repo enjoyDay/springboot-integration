@@ -13,23 +13,26 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/10/24
  */
 public class ThreadPool {
-    //    public static void main(String[] args) {
-//        ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
-//        for (int i = 0; i < 10; i++) {
-//            final int temp = i;
-//            //只执行一次
-//            newCachedThreadPool.execute(()-> {
-//                    try {
-//                        Thread.sleep(100);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    System.out.println(Thread.currentThread().getName() + ",i:" + temp);
-//            });
-//        }
-//    }
+    // 不固定线程池
+    public static void main(String[] args) {
+        ExecutorService newCachedThreadPool = Executors.newCachedThreadPool();
+        for (int i = 0; i < 10; i++) {
+            final int temp = i;
+            //只执行一次
+            newCachedThreadPool.execute(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + ",i:" + temp);
+            });
+        }
+        newCachedThreadPool.shutdown();
+    }
 
 
+    // 固定线程数线程
 //    public static void main(String[] args) {
 //        ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(5);
 //        for (int i = 0; i < 10; i++) {
@@ -38,6 +41,7 @@ public class ThreadPool {
 //        }
 //    }
 
+    // 定时器线程
 //    public static void main(String[] args) {
 //        ScheduledExecutorService newScheduledThreadPool = Executors.newScheduledThreadPool(5);
 //        for (int i = 0; i < 10; i++) {
@@ -50,20 +54,21 @@ public class ThreadPool {
 //        }
 //    }
 
-    public static void main(String[] args) {
-        ExecutorService newSingleThreadExecutor = Executors.newSingleThreadExecutor();
-        for (int i = 0; i < 10; i++) {
-            final int index = i;
-            newSingleThreadExecutor.execute(() -> {
-                System.out.println("index:" + index);
-                try {
-                    int a = 1 / 0;
-                    Thread.sleep(200);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-
-    }
+    // 单线程
+//    public static void main(String[] args) {
+//        ExecutorService newSingleThreadExecutor = Executors.newSingleThreadExecutor();
+//        for (int i = 0; i < 10; i++) {
+//            final int index = i;
+//            newSingleThreadExecutor.execute(() -> {
+//                System.out.println("index:" + index);
+//                try {
+//                    int a = 1 / 0;
+//                    Thread.sleep(200);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            });
+//        }
+//
+//    }
 }

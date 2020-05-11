@@ -13,7 +13,7 @@ public class MyJob extends QuartzJobBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MyJob.class);
 
-    // private boolean httpRequest = false;                        // 布尔类型的变量，不要加is前缀
+    // private boolean httpRequest = false;// 布尔类型的变量，不要加is前缀
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {

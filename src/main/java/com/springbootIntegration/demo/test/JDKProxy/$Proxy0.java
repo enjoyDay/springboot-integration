@@ -16,6 +16,8 @@ import java.lang.reflect.UndeclaredThrowableException;
 // 注意，这里可知是继承了Proxy，由于是但继承，因此java的代理必须是实现接口
 // 注意，这里为什么是继承Proxy类，因为创建的时候是把我们原来实现了InvocationHandler接口的
 // 类传进到Proxy中，作为h参数，
+// 其实也可以不实现接口，但是这里实现接口的原因就是在被代理类实现了多个接口，后面类型转换的时候
+// 调用不同接口的方法
 public final class $Proxy0 extends Proxy implements HelloWorldImpl {
     private static Method m1;
     private static Method m4;

@@ -29,9 +29,9 @@ public class TestJDKProxy {
         proxy1.sayHi();
 
         // 这里我们将jdk生成的代理类输出了出来，方便后面分析使用
-        byte[] bytes = ProxyGenerator.generateProxyClass("$Proxy0",new Class[]{helloWorld.getClass()});
-        FileOutputStream os = new FileOutputStream(properties+"/src/main/java/com/springbootIntegration/demo/test/JDKProxy/"+"Proxy0.class");
-        os.write(bytes);
-        os.close();
+//        byte[] bytes = ProxyGenerator.generateProxyClass("$Proxy0",new Class[]{helloWorld.getClass()});
+//        FileOutputStream os = new FileOutputStream(properties+"/src/main/java/com/springbootIntegration/demo/test/JDKProxy/"+"Proxy0.class");
+//        os.write(bytes);
+//        os.close();
     }
 }

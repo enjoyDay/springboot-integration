@@ -116,6 +116,11 @@ public class JobService{
         return RestResponse.responseOK();
     }
 
+    /**
+     * 将job放放进日程表中
+     * @param job
+     * @throws Exception
+     */
     public void schedulerJob(QuartzJobEntity job) throws Exception {
         //构建job信息
         Class cls = Class.forName(job.getJobClassName()) ;

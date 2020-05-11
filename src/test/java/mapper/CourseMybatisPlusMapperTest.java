@@ -31,14 +31,14 @@ public class CourseMybatisPlusMapperTest {
 
     @Test
     public void testSelect(){
-        System.out.println(("----- selectAll method test ------"));
+        System.out.println(("----- selectAll method Test ------"));
         List<User> userList = userMapper.selectList(null);
         userList.forEach(System.out::println);
     }
 
     @Test
     public void testUpdate(){
-        System.out.println(("----- testUpdate method test ------"));
+        System.out.println(("----- testUpdate method Test ------"));
         User user = userMapper.selectById(1);
         user.setName("haha");
         UpdateWrapper<User> wrapper = new UpdateWrapper();

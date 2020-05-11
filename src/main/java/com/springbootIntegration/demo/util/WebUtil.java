@@ -143,11 +143,11 @@ public final class WebUtil {
     public static final String getHost(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
         if (DataUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("Proxy-Client-IP");
+            ip = request.getHeader("Proxy-RegistryClient-IP");
         }
 
         if (DataUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getHeader("WL-Proxy-Client-IP");
+            ip = request.getHeader("WL-Proxy-RegistryClient-IP");
         }
 
         if (DataUtil.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
