@@ -1,40 +1,106 @@
 package com.springbootIntegration.demo.util;
 
 import com.springbootIntegration.demo.support.exception.BaseException;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * @author liukun
  * @description 对图片操作的工具类
  * @date 2020/5/26
  */
+@Slf4j
 public class PicUtil {
 
     /**
-     * 图片任意格式转换
+     * 图片格式之间相互转化
+     * 目前仅测试过jpg,jpeg,gif,png,bmp之间的转换,其余格式需要先测试再使用
      *
-     * @param picSrc       原格式文件绝对路径
-     * @param outputFormat 目标格式
+     * @param picSrc       原图片文件绝对路径
+     * @param outputFormat 要转换的格式,
+     * @return 转换后的图片绝对路径
+     * 存在bug，在win上可以运行，在linux非桌面端没测试过，在28所麒麟操作系统测试可以
      */
-    public static void conversion(String picSrc, String outputFormat) {
-        try {
-            File input = new File(picSrc);
-            if (!input.exists()) {
-                System.out.println("图片不存在");
-                return ;
-            }
-            BufferedImage bim = ImageIO.read(input);
-            String targetFile = picSrc.substring(0, picSrc.lastIndexOf(".") + 1) + outputFormat;
-            File output = new File(targetFile);
-            ImageIO.write(bim, outputFormat, output);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static File conversion(String picSrc, String outputFormat) {
+        // 图片http://192.168.3.92:10000/CAMP/Img/capture/b61483e602724a4f96a2adfffc98d055.png不存在
+        File file = new File(picSrc);
+        if (!file.exists()) {
+            log.error("图片" + picSrc + "不存在");
+            return null;
         }
+
+        BufferedImage input = null;
+        // input = ImageIO.read(file); 直接使用java自带的方法读取是有bug的，后期出来的图片会失真
+        Image image = Toolkit.getDefaultToolkit().getImage(file.getPath());
+        input = toBufferedImage(image);
+
+        String targetFile = picSrc.substring(0, picSrc.lastIndexOf(".") + 1) + outputFormat;
+        // 要输出的文件
+        File output = new File(targetFile);
+        // 这么写是为了防止使用ImageIO.write后失真
+        Iterator<ImageWriter> iterator = ImageIO.getImageWritersByFormatName(outputFormat);
+        if (iterator.hasNext()) {
+            ImageWriter writer = iterator.next();
+            ImageWriteParam param = writer.getDefaultWriteParam();
+
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            param.setCompressionQuality(0.92f);
+            try {
+                FileImageOutputStream out = new FileImageOutputStream(output);
+                writer.setOutput(out);
+                writer.write(null, new IIOImage(input, null, null), param);
+                out.close();
+                writer.dispose();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return output;
+    }
+
+    private static BufferedImage toBufferedImage(Image image) {
+        if (image instanceof BufferedImage) {
+            return (BufferedImage) image;
+        }
+
+        // 下面代码确保所有像素被加载
+        image = new ImageIcon(image).getImage();
+        BufferedImage bimage = null;
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+
+        try {
+            int transparency = Transparency.OPAQUE;
+            GraphicsDevice gs = ge.getDefaultScreenDevice();
+            GraphicsConfiguration gc = gs.getDefaultConfiguration();
+            bimage = gc.createCompatibleImage(image.getWidth(null), image.getHeight(null), transparency);
+        }
+        catch (HeadlessException e) {
+            log.error("系统没有屏幕");
+        }
+        if (bimage == null) {
+            int type = BufferedImage.TYPE_INT_RGB;
+            bimage = new BufferedImage(image.getWidth(null),image.getHeight(null) ,type );
+        }
+        Graphics graphics = bimage.createGraphics();
+        graphics.drawImage(image,0 ,0 ,null );
+        graphics.dispose();
+
+        return bimage;
     }
 
     /**
