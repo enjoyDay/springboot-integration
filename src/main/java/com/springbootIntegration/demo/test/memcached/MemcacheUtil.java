@@ -230,11 +230,11 @@ public class MemcacheUtil {
 
         // Try to get a value, for up to 5 seconds, and cancel if it
         // doesn't return
-        c.set("memcached", 900, 123);
+        c.set("memcached2", 900, "234");
 
         Object myObj = null;
 
-        Future<Object> f = c.asyncGet("memcached");
+        Future<Object> f = c.asyncGet("memcached2");
 
         try {
 
@@ -244,7 +244,7 @@ public class MemcacheUtil {
 
             // or TimeoutException
 
-            System.out.println("memcached value is ->"+ myObj);
+            System.out.println("memcached2 value is ->"+ myObj);
 
         } catch (Exception e) {
             // Since we don't need this, go ahead and cancel the operation.
@@ -263,5 +263,4 @@ public class MemcacheUtil {
     public void closeClient() {
         memcachedClient.shutdown();
     }
-
 }
