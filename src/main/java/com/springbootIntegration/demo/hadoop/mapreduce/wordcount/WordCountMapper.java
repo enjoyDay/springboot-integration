@@ -1,4 +1,4 @@
-package com.springbootIntegration.demo.hadoop.mapreduce;
+package com.springbootIntegration.demo.hadoop.mapreduce.wordcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;

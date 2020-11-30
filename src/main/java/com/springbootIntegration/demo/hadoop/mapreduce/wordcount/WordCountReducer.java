@@ -1,4 +1,4 @@
-package com.springbootIntegration.demo.hadoop.mapreduce;
+package com.springbootIntegration.demo.hadoop.mapreduce.wordcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -15,7 +15,7 @@ public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritab
     /**
      * 对每一组相同 k 的<k,v>组调用一次 reduce()方法
      *
-     * @param key key代表一组相同<k,v>的key
+     * @param key     key代表一组相同<k,v>的key
      * @param value   value代表一组相同key的个数
      * @param context
      * @throws IOException
@@ -30,6 +30,7 @@ public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritab
         }
         // 2 输出
         context.write(key, new IntWritable(sum));
+        
     }
 
 }

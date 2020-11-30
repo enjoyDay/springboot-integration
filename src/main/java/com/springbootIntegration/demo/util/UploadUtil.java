@@ -256,8 +256,14 @@ public final class UploadUtil {
         }
     }
 
+    /**
+     * 该函数暂时不能使用
+     * @param request
+     * @return
+     */
     public static String getUploadDir(HttpServletRequest request) {
-        return request.getServletContext().getRealPath("/WEB-INF/upload/") + File.separator;
+        return "";
+//        return request.getServletContext().getRealPath("/WEB-INF/upload/") + File.separator;
     }
 
     public static FileModel remove2FDFS(String filePath) {

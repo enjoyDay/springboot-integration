@@ -24,7 +24,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 //@SpringBootTest
 @SpringBootTest(classes = Application.class)
-public class CourseMybatisPlusMapperTest {
+public class CourseMybatisPlusMapperMongoDBJDBC {
 
     @Resource
     private UserMapper userMapper;

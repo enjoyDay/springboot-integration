@@ -659,6 +659,11 @@
             <artifactId>disruptor</artifactId>
             <version>3.4.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-mapreduce-client-core</artifactId>
+            <version>2.7.2</version>
+        </dependency>
         <!-- hadoop2.7.2 end -->
     </dependencies>
     <!-- 私服下使用 -->
