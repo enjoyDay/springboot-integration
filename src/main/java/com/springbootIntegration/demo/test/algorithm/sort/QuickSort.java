@@ -6,6 +6,9 @@ package com.springbootIntegration.demo.test.algorithm.sort;
  * @since 2020/12/3
  */
 public class QuickSort {
+//    通过一趟排序将待记录分割成独立的两部分，
+//    其中一部分记录的关键字均比另一部分记录的关键字小，
+//    则可分别对这两部分记录继续进行排序，以达到整个序列有序的目的。
     public static void sort(int[] nums) {
         qsort(nums, 0 , nums.length);
     }
