@@ -8,7 +8,7 @@ package com.springbootIntegration.demo.test.algorithm.link;
 public class DulLinkTest {
 
 
-    class Node {
+    private static class Node {
         String value;
         Node prior;
         Node next;
