@@ -665,6 +665,14 @@
             <version>2.7.2</version>
         </dependency>
         <!-- hadoop2.7.2 end -->
+
+        <!--   爬虫学习使用     -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+
     </dependencies>
     <!-- 私服下使用 -->
     <profiles>
