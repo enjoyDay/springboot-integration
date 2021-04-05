@@ -2,9 +2,7 @@ package com.springbootIntegration.demo.test.algorithm.tree;
 
 import io.swagger.models.auth.In;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @author liukun
@@ -138,11 +136,11 @@ public class MyTreeNode {
 
             if (!stack.isEmpty()) {
                 //2.获取栈顶元素值
-                treeNode=stack.peek();
+                treeNode = stack.peek();
                 //3.没有右孩子，或者右孩子已经被访问过
-                if (treeNode.right==null || treeNode.right == pre) {
+                if (treeNode.right == null || treeNode.right == pre) {
                     //则可以访问栈顶元素
-                    treeNode=stack.pop();
+                    treeNode = stack.pop();
                     System.out.print(treeNode.data);
                     System.out.print(" ");
                     //标记上一次访问的节点
@@ -167,38 +165,139 @@ public class MyTreeNode {
 
         // 添加元素到尾部
         queue.offer(node);
-        while(!queue.isEmpty()) {
+        while (!queue.isEmpty()) {
             TreeNode poll = queue.poll();
             System.out.print(poll.data);
             System.out.print(" ");
             //如果当前节点的左节点不为空，则左节点入队列
-            if (poll.left!=null) {
+            if (poll.left != null) {
                 queue.offer(poll.left);
             }
             //如果当前节点的右节点不为空，则右节点入队列
-            if (poll.right!=null) {
+            if (poll.right != null) {
                 queue.offer(poll.right);
             }
         }
     }
 
+    // 已知前序和中序，输出后序
+    public static void printTail() {
+        LinkedList<Integer> preOrder = new LinkedList<>(Arrays.asList(1, 2, 4, 7, 3, 5, 6, 8));
+        LinkedList<Integer> inOrder = new LinkedList<>(Arrays.asList(4, 7, 2, 1, 5, 3, 8, 6));
+
+        TreeNode treeNode = constructTree(preOrder, inOrder);
+
+        // 后序遍历
+        postOrderTraversal(treeNode);
+    }
+
+    private static TreeNode constructTree(LinkedList<Integer> preOrder, LinkedList<Integer> inOrder) {
+        if (preOrder == null || inOrder == null || preOrder.size() <= 0 || inOrder.size() <= 0) {
+            return null;
+        }
+
+        return constrcutCore(preOrder, inOrder);
+    }
+
+    private static TreeNode constrcutCore(LinkedList<Integer> preOrder, LinkedList<Integer> inOrder) {
+        // 前序遍历第一个点是根节点
+        Integer value = preOrder.get(0);
+        // 创建一个树的根节点
+        TreeNode root = new TreeNode(value);
+        root.data = value;
+        root.left = root.right = null;
+
+        if (preOrder.size() <= 0) {
+            if (inOrder.size() <= 0 && preOrder.getFirst().equals(inOrder.getFirst())) {
+                return root;
+            }
+        }
+
+        // 从中序中找到根节点
+        int index = 0;
+        while (!inOrder.get(index).equals(value) && index <= inOrder.size()) {
+            index++;
+        }
+
+        // 将前序拆分为两半
+        LinkedList<Integer> preOrderLeft = LinkedListToList(preOrder.subList(1, index + 1));
+        LinkedList<Integer> preOrderRight = LinkedListToList(preOrder.subList(index + 1, preOrder.size()));
+
+        // 将后序拆分为两半
+        LinkedList<Integer> inOrderLeft = LinkedListToList(inOrder.subList(0, index));
+        LinkedList<Integer> inOderRight = LinkedListToList(inOrder.subList(index + 1, inOrder.size()));
+
+        if (index > 0) {
+            root.left = constrcutCore(preOrderLeft, inOrderLeft);
+        }
+
+        if (preOrder.size() - index - 1 > 0) {
+            root.right = constrcutCore(preOrderRight, inOderRight);
+        }
+
+        return root;
+    }
+
+    private static LinkedList LinkedListToList(List<Integer> list) {
+        LinkedList<Integer> linkedList = new LinkedList();
+        for (int i = 0; i < list.size(); i++) {
+            linkedList.addLast(list.get(i));
+        }
+
+        return linkedList;
+    }
+
+    // 找中序节点指定节点的下一个节点
+    // 后序遍历（使用递归的方式）
+    public static void postOrderNext(TreeNode node,int data) {
+        ArrayList<TreeNode> arrayList = new ArrayList();
+
+        postOrderNextOne(node, arrayList);
+
+        int index=0;
+        while (index<=arrayList.size()-1) {
+            if (arrayList.get(index).data==data) {
+                break;
+            }
+            index++;
+        }
+        if (index<arrayList.size()-1) {
+            System.out.println(arrayList.get(index+1).data);
+        }
+        System.out.println(arrayList.get(0).data);
+    }
+
+    private static void postOrderNextOne(TreeNode node, List list) {
+        if (node == null) {
+            return;
+        }
+
+        postOrderNextOne(node.left, list);
+        postOrderNextOne(node.right, list);
+//        System.out.print(node.data);
+//        System.out.print(" ");
+        list.add(node);
+    }
+
     public static void main(String[] args) {
         LinkedList<Integer> inputList = new LinkedList<>(Arrays.asList(new Integer[]{3, 2, 9, null, null, 10, null, null, 8, null, 4}));
         TreeNode tree = createTree(inputList);
-
-        System.out.println("前序：");
-        preOrderTraversal(tree);
-        System.out.println("前序带stack：");
-        preOrderTraversalWithStack(tree);
-        System.out.println("中序：");
-        inOrderTraversal(tree);
-        System.out.println("中序带stack：");
-        inOrderTraversalWithStack(tree);
+//
+//        System.out.println("前序：");
+//        preOrderTraversal(tree);
+//        System.out.println("前序带stack：");
+//        preOrderTraversalWithStack(tree);
+//        System.out.println("中序：");
+//        inOrderTraversal(tree);
+//        System.out.println("中序带stack：");
+//        inOrderTraversalWithStack(tree);
         System.out.println("后序：");
-        postOrderTraversal(tree);
-        System.out.println("后序带stack：");
-        postOrderTraversalWithStack(tree);
-        System.out.println("层序遍历：");
-        levelTraversal(tree);
+        postOrderNext(tree,3);
+//        System.out.println("后序带stack：");
+//        postOrderTraversalWithStack(tree);
+//        System.out.println("层序遍历：");
+//        levelTraversal(tree);
+
+//        MyTreeNode.printTail();
     }
 }
