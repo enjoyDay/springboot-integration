@@ -673,6 +673,20 @@
             <version>1.12.1</version>
         </dependency>
 
+        <!--  kyro序列化-->
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo-shaded</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.javakaffee</groupId>
+            <artifactId>kryo-serializers</artifactId>
+            <version>0.41</version>
+        </dependency>
+
+
+
     </dependencies>
     <!-- 私服下使用 -->
     <profiles>
