@@ -698,6 +698,12 @@
             <version>0.41</version>
         </dependency>
 
+        <!--   kafka生产者使用     -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.11.0.0</version>
+        </dependency>
 
     </dependencies>
     <!-- 私服下使用 -->
