@@ -698,7 +698,7 @@
             <version>0.41</version>
         </dependency>
 
-        <!--   kafka生产者、消费者使用     -->
+        <!--   kafka生产者\消费者都使用这个     -->
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-clients</artifactId>
