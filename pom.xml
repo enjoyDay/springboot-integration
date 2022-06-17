@@ -31,7 +31,7 @@
         <druid.spring.boot.starter>1.1.0</druid.spring.boot.starter>
 
         <commons.lang3>3.4</commons.lang3>
-        <fastjson.version>1.2.49</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <jstl.version>1.2</jstl.version>
         <swagger.version>1.5.18</swagger.version>
         <thumbnailator.version>0.4.8</thumbnailator.version>
