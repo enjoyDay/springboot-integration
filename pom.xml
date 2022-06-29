@@ -37,7 +37,7 @@
         <thumbnailator.version>0.4.8</thumbnailator.version>
         <zxing.version>3.3.2</zxing.version>
         <jsch.version>0.1.54</jsch.version>
-        <poi.version>3.17</poi.version>
+        <poi.version>4.1.1</poi.version>
         <jxl.version>2.6.12</jxl.version>
     </properties>
 
